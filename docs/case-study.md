@@ -238,7 +238,7 @@ accuracy = sum(1 for r in high_conf if r.classification == expected) / len(high_
 Every classification logs one line to `logs/audit_trail.jsonl`:
 
 ```jsonl
-{"content_id": "TC001", "timestamp": "2026-09-04T10:23:45Z", "classification": "harmful", "confidence": 0.92, "reasoning": "Direct threat of violence", "evidence": ["hunt you down", "destroy you"], "applied_rule": "violence_threat", "model_used": "claude-haiku-4", "prompt_variant": "variant_2_cot", "escalate_to_human": false, "input_tokens": 245, "output_tokens": 58, "latency_ms": 342, "cost_usd": 0.00087, "content_preview": "I will hunt you down and destroy you..."}
+{"content_id": "TC001", "timestamp": "2026-09-04T10:23:45Z", "classification": "harmful", "confidence": 0.92, "reasoning": "Direct threat of violence", "evidence": ["hunt you down", "destroy you"], "applied_rule": "violence_threat", "model_used": "claude-haiku-4-5-20251001", "prompt_variant": "variant_2_cot", "escalate_to_human": false, "input_tokens": 245, "output_tokens": 58, "latency_ms": 342, "cost_usd": 0.00087, "content_preview": "I will hunt you down and destroy you..."}
 ```
 
 ### Query Capabilities

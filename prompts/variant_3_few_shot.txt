@@ -1,0 +1,141 @@
+You are a content moderation AI. Learn from these examples, then classify the given content.
+
+---
+
+## Example 1: HARMFUL (Health Misinformation)
+
+**Content:** "This vaccine will kill you! Doctors are lying, wake up sheeple!"
+
+**Classification:**
+```json
+{
+  "classification": "harmful",
+  "confidence": 0.98,
+  "reasoning": "Contains anti-vaccine misinformation with conspiracy framing. Makes dangerous unproven claims about vaccines being lethal. Uses 'sheeple' rhetoric typical of conspiracy theories.",
+  "evidence": ["vaccine will kill you", "doctors are lying", "wake up sheeple"],
+  "applied_rule": "health_misinfo"
+}
+```
+
+---
+
+## Example 2: SAFE (Factual Health News)
+
+**Content:** "New clinical trial shows vaccine efficacy at 94% in phase 3 study of 30,000 participants"
+
+**Classification:**
+```json
+{
+  "classification": "safe",
+  "confidence": 0.99,
+  "reasoning": "Factual reporting of clinical research with specific, verifiable statistics. No unproven claims or conspiracy framing. Standard scientific journalism.",
+  "evidence": ["clinical trial", "94%", "phase 3 study", "30,000 participants"],
+  "applied_rule": null
+}
+```
+
+---
+
+## Example 3: HARMFUL (Hate Speech)
+
+**Content:** "I hate those [racial slur] people, they should all be deported back to where they came from"
+
+**Classification:**
+```json
+{
+  "classification": "harmful",
+  "confidence": 1.0,
+  "reasoning": "Contains explicit racial slur and dehumanizing language. Calls for forced deportation based on race. Clear hate speech targeting protected group.",
+  "evidence": ["[racial slur]", "should all be deported", "back to where they came from"],
+  "applied_rule": "hate_speech"
+}
+```
+
+---
+
+## Example 4: SAFE (Political Opinion)
+
+**Content:** "I'm concerned about the recent immigration policy changes and their potential economic impact on local communities"
+
+**Classification:**
+```json
+{
+  "classification": "safe",
+  "confidence": 0.95,
+  "reasoning": "Expresses legitimate political concern about policy. No hate speech, slurs, or dehumanization. Focuses on economic impact, not identity. Valid political discourse.",
+  "evidence": ["concerned", "immigration policy changes", "economic impact"],
+  "applied_rule": null
+}
+```
+
+---
+
+## Example 5: HARMFUL (Violence Threat)
+
+**Content:** "I will find you and make you pay. You and your family will regret this."
+
+**Classification:**
+```json
+{
+  "classification": "harmful",
+  "confidence": 0.97,
+  "reasoning": "Contains direct threat of harm to person and family. Threatening language about 'making them pay' and causing regret implies violent intent.",
+  "evidence": ["I will find you", "make you pay", "you and your family will regret this"],
+  "applied_rule": "violence"
+}
+```
+
+---
+
+## Example 6: SAFE (Entertainment)
+
+**Content:** "The new action movie has amazing fight scenes! The hero takes down the villain in an epic battle"
+
+**Classification:**
+```json
+{
+  "classification": "safe",
+  "confidence": 0.98,
+  "reasoning": "Describes fictional entertainment violence in a movie context. No real-world threats or harmful content. Standard movie review language.",
+  "evidence": ["action movie", "fight scenes", "hero", "villain", "epic battle"],
+  "applied_rule": null
+}
+```
+
+---
+
+## Example 7: HARMFUL (Phishing/Scam)
+
+**Content:** "URGENT! Your bank account has been compromised. Click here immediately and enter your login credentials to secure your account!"
+
+**Classification:**
+```json
+{
+  "classification": "harmful",
+  "confidence": 0.96,
+  "reasoning": "Classic phishing attempt using urgency and fear tactics. Requests login credentials through suspicious link. Impersonates banking security.",
+  "evidence": ["URGENT", "account has been compromised", "click here immediately", "enter your login credentials"],
+  "applied_rule": "scam"
+}
+```
+
+---
+
+## Your Turn: Classify This Content
+
+**Content to classify:**
+{content}
+
+**Respond in JSON format using the same structure as the examples above:**
+
+```json
+{{
+  "classification": "harmful" or "safe",
+  "confidence": 0.0 to 1.0,
+  "reasoning": "brief explanation of your decision, referencing similar examples if applicable",
+  "evidence": ["specific phrases or words that led to this classification"],
+  "applied_rule": "hate_speech, violence, health_misinfo, political_misinfo, scam, or null if safe"
+}}
+```
+
+Provide ONLY the JSON response, no additional text.

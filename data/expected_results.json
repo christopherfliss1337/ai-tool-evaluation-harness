@@ -1,0 +1,160 @@
+{
+  "description": "Expected results baseline for regression testing",
+  "version": "1.0",
+  "created": "2026-09-04",
+  "prompt_variant_baseline": "variant_2_cot",
+  "model_baseline": "claude-haiku-4",
+  "total_cases": 30,
+  "expected_results": {
+    "TC001": {
+      "classification": "harmful",
+      "category": "violence_threat",
+      "severity": "high"
+    },
+    "TC002": {
+      "classification": "safe",
+      "category": "commercial",
+      "severity": "n/a"
+    },
+    "TC003": {
+      "classification": "harmful",
+      "category": "health_misinformation",
+      "severity": "high"
+    },
+    "TC004": {
+      "classification": "safe",
+      "category": "health_news",
+      "severity": "n/a"
+    },
+    "TC005": {
+      "classification": "harmful",
+      "category": "hate_speech",
+      "severity": "high"
+    },
+    "TC006": {
+      "classification": "safe",
+      "category": "political_opinion",
+      "severity": "n/a"
+    },
+    "TC007": {
+      "classification": "harmful",
+      "category": "health_misinformation",
+      "severity": "high"
+    },
+    "TC008": {
+      "classification": "safe",
+      "category": "health_advice",
+      "severity": "n/a"
+    },
+    "TC009": {
+      "classification": "harmful",
+      "category": "phishing_scam",
+      "severity": "medium"
+    },
+    "TC010": {
+      "classification": "safe",
+      "category": "entertainment_news",
+      "severity": "n/a"
+    },
+    "TC011": {
+      "classification": "harmful",
+      "category": "hate_speech",
+      "severity": "high"
+    },
+    "TC012": {
+      "classification": "safe",
+      "category": "academic_research",
+      "severity": "n/a"
+    },
+    "TC013": {
+      "classification": "harmful",
+      "category": "hate_speech",
+      "severity": "high"
+    },
+    "TC014": {
+      "classification": "safe",
+      "category": "news_reporting",
+      "severity": "n/a"
+    },
+    "TC015": {
+      "classification": "harmful",
+      "category": "spam_chain_letter",
+      "severity": "low"
+    },
+    "TC016": {
+      "classification": "harmful",
+      "category": "health_misinfo_dangerous",
+      "severity": "critical"
+    },
+    "TC017": {
+      "classification": "safe",
+      "category": "health_education",
+      "severity": "n/a"
+    },
+    "TC018": {
+      "classification": "harmful",
+      "category": "political_misinfo_election",
+      "severity": "high"
+    },
+    "TC019": {
+      "classification": "safe",
+      "category": "election_reporting",
+      "severity": "n/a"
+    },
+    "TC020": {
+      "classification": "harmful",
+      "category": "scam_fake_prize",
+      "severity": "medium"
+    },
+    "TC021": {
+      "classification": "harmful",
+      "category": "violence_specific_threat",
+      "severity": "critical"
+    },
+    "TC022": {
+      "classification": "safe",
+      "category": "entertainment_description",
+      "severity": "n/a"
+    },
+    "TC023": {
+      "classification": "harmful",
+      "category": "health_misinfo_pseudoscience",
+      "severity": "high"
+    },
+    "TC024": {
+      "classification": "safe",
+      "category": "health_news_nuanced",
+      "severity": "n/a"
+    },
+    "TC025": {
+      "classification": "harmful",
+      "category": "hate_speech_replacement_theory",
+      "severity": "high"
+    },
+    "TC026": {
+      "classification": "safe",
+      "category": "immigration_news",
+      "severity": "n/a"
+    },
+    "TC027": {
+      "classification": "harmful",
+      "category": "phishing_identity_theft",
+      "severity": "high"
+    },
+    "TC028": {
+      "classification": "safe",
+      "category": "security_information",
+      "severity": "n/a"
+    },
+    "TC029": {
+      "classification": "safe",
+      "category": "educational_historical",
+      "severity": "n/a"
+    },
+    "TC030": {
+      "classification": "harmful",
+      "category": "conspiracy_theory_health",
+      "severity": "medium"
+    }
+  }
+}

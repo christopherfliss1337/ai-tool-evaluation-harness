@@ -1,10 +1,19 @@
 # AI Tool Evaluation Harness
 
-**Systematic Framework for Evaluating AI Models, Prompts, and Tools**
+**Systematic framework for evaluating AI models, prompts, and classification agents**
 
-Demonstrates the methodology for the job responsibility: *"Evaluierung neuer AI-Funktionen und Modelle sowie Erstellung von Empfehlungen."*
+Proof-of-work for Nature Heart application demonstrating: systematic evaluation methodology, prompt engineering, cost/quality trade-off analysis, and production-oriented patterns.
 
-Shows: Comparative model testing, prompt engineering, cost/quality trade-off analysis, and systematic evaluation discipline.
+---
+
+## What This Proves
+
+✅ **Framework Implementation** - Complete evaluation harness with audit trails  
+✅ **Offline Verification** - Structure tests passing (12/12)  
+✅ **Evaluation Design** - 3 prompt strategies, golden test set, metrics framework  
+⏸️ **Live Model Benchmark** - NOT executed (no authorized API evaluation)
+
+This repository demonstrates evaluation infrastructure and methodology. Intentionally does not report fabricated benchmark results.
 
 ---
 
@@ -12,315 +21,264 @@ Shows: Comparative model testing, prompt engineering, cost/quality trade-off ana
 
 ### Prerequisites
 
-- Python 3.12 or higher
-- Anthropic API key ([get one here](https://console.anthropic.com/settings/keys))
+- Python 3.12+
+- Anthropic API key for live evaluation (optional - all tests run offline)
 
 ### Installation
 
 ```bash
-# 1. Clone or navigate to this directory
-cd ai-agent-quality-framework
+git clone https://github.com/christopherfliss1337/ai-tool-evaluation-harness.git
+cd ai-tool-evaluation-harness
 
-# 2. Create virtual environment
+# Create virtual environment
 python -m venv venv
 
-# 3. Activate virtual environment
 # Windows:
 venv\Scripts\activate
 # macOS/Linux:
 source venv/bin/activate
 
-# 4. Install dependencies
+# Install dependencies
 pip install -r requirements.txt
 
-# 5. Configure API key
+# Optional: Configure API key for live testing
 cp .env.example .env
-# Edit .env and add your ANTHROPIC_API_KEY
+# Edit .env and add ANTHROPIC_API_KEY
 ```
 
-### First Run
-
-Run the evaluation harness on a sample task:
+### Run Structure Tests
 
 ```bash
-python -m src.content_classifier
+pytest tests/test_structure.py -v
 ```
 
-Expected output:
-```
-AI Tool Evaluation Harness - Model Test
-
-Task: Content classification
-Input: 'This product will cure your cancer 100% guaranteed!'
-
-Result: HARMFUL
-Confidence: 0.95
-Reasoning: Unproven absolute medical cure claim
-Evidence: cure, 100% guaranteed
-
-Performance Metrics:
-  Latency: 342ms
-  Tokens: 245 in, 58 out
-  Cost: $0.000087 USD
-  Model: claude-haiku-4
-```
+Expected: 12/12 passing (offline, no API key required)
 
 ---
 
-## Project Structure
+## Repository Structure
 
 ```
-ai-agent-quality-framework/
-├── README.md              # This file
-├── requirements.txt       # Python dependencies
-├── .env.example           # API key template
-├── .gitignore             # Git ignore rules
+ai-tool-evaluation-harness/
+├── src/
+│   ├── content_classifier.py   # Core classification agent
+│   ├── prompt_bench.py          # Prompt comparison CLI
+│   ├── agent_evaluator.py       # Evaluation orchestration
+│   └── audit_logger.py          # JSONL audit trail
 │
-├── src/                   # Source code
-│   ├── content_classifier.py  # Core classification agent
-│   ├── prompt_bench.py        # Prompt testing CLI (TODO)
-│   ├── agent_evaluator.py     # Evaluation layer (TODO)
-│   └── audit_logger.py        # JSONL audit trail (TODO)
+├── prompts/
+│   ├── variant_1_direct.txt     # Simple classification
+│   ├── variant_2_cot.txt        # Structured reasoning
+│   └── variant_3_few_shot.txt   # Example-based learning
 │
-├── prompts/               # Prompt variant templates
-│   ├── variant_1_direct.txt   # Simple direct classification
-│   ├── variant_2_cot.txt      # Chain-of-thought (TODO)
-│   └── variant_3_few_shot.txt # Few-shot examples (TODO)
+├── data/
+│   ├── golden_test_set.json     # 30 test cases (harmful/safe)
+│   └── expected_results.json    # Baseline expectations
 │
-├── data/                  # Test data and baselines
-│   ├── golden_test_set.json   # 10 test cases (expanding to 30)
-│   └── expected_results.json  # Regression baseline (TODO)
+├── tests/
+│   ├── test_structure.py        # 12 offline tests ✅
+│   └── test_regression.py       # 7 API-dependent tests (pending key)
 │
-├── tests/                 # Automated tests
-│   ├── test_regression.py     # Regression test suite (TODO)
-│   └── test_evaluation.py     # Evaluation tests (TODO)
+├── docs/
+│   ├── case-study.md            # Framework documentation
+│   └── evaluation-plan.md       # Evaluation methodology
 │
-├── logs/                  # Generated audit logs
-│   └── audit_trail.jsonl      # Decision audit trail
-│
-└── docs/                  # Documentation
-    ├── case-study.md           # Framework case study (TODO)
-    └── test-report.md          # Prompt comparison report (TODO)
+└── logs/                        # Generated audit trails
 ```
 
 ---
 
 ## Core Components
 
-### 1. Content Classifier (`src/content_classifier.py`)
+### 1. Content Classifier
 
-AI agent that classifies content as `harmful` or `safe` using Anthropic Claude API.
+AI agent that classifies content as `harmful` or `safe` using Anthropic's Claude API.
 
 **Features:**
-- Multiple prompt variant support
-- Structured output with Pydantic validation
-- Confidence scoring (0.0 - 1.0)
+- Structured output (Pydantic validation)
+- Confidence scoring (0.0-1.0)
 - Evidence extraction
-- Human escalation logic
+- Human escalation logic for low-confidence + harmful combinations
 - Token usage and cost tracking
+- Audit trail generation
 
-**Example Usage:**
+**Example:**
 
 ```python
 from src.content_classifier import ContentClassifier
 
-# Initialize
 classifier = ContentClassifier(
     prompt_variant="variant_1_direct",
-    model="claude-haiku-4"
+    model="fast"
 )
 
-# Classify
 result = classifier.classify(
-    content="Suspicious content here",
+    content="This product cures cancer 100% guaranteed!",
     content_id="TEST_001"
 )
 
 print(f"Classification: {result.classification}")
 print(f"Confidence: {result.confidence}")
-print(f"Evidence: {result.evidence}")
-print(f"Escalate: {result.escalate_to_human}")
+print(f"Escalate to human: {result.escalate_to_human}")
 ```
 
----
+### 2. Prompt Bench
 
-### 2. Prompt Testing Bench (`src/prompt_bench.py`) ✅
+Systematic A/B testing framework for comparing prompt variants.
 
-Systematic A/B testing of prompt variants.
+**Capabilities:**
+- Run multiple prompts against golden test set
+- Calculate precision, recall, F1, accuracy
+- Measure latency and cost per classification
+- Generate comparison reports
+- Export JSONL audit trails
 
-**Features:**
-- Run prompt variants against golden test set
-- Calculate metrics: Precision, Recall, F1, Accuracy, Latency, Cost per 1K
-- Generate comparison reports with Rich tables
-- Confusion matrix tracking (TP, TN, FP, FN)
-- Automatic best variant recommendation by F1 score
+**Usage:**
 
-**CLI Usage:**
 ```bash
-# List available variants
-python -m src.prompt_bench list
+# Compare all 3 variants (requires API key)
+python -m src.prompt_bench compare --variants 1 2 3
 
 # Run single variant
-python -m src.prompt_bench run --variant variant_1_direct --model claude-haiku-4
-
-# Compare multiple variants
-python -m src.prompt_bench compare --variants variant_1_direct variant_2_cot variant_3_few_shot
-
-# Use different model
-python -m src.prompt_bench run --variant variant_2_cot --model claude-sonnet-4
+python -m src.prompt_bench run --variant 1 --output results.json
 ```
 
-**Note:** Requires ANTHROPIC_API_KEY in .env file to execute.
+### 3. Evaluation Methodology
+
+**Test Set:** 30 golden cases covering harmful/safe content  
+**Metrics:** Precision, Recall, F1, Accuracy, Latency, Cost  
+**Variants:** Direct, Chain-of-Thought, Few-Shot  
+
+See [docs/case-study.md](docs/case-study.md) for detailed methodology.
 
 ---
 
-### 3. Agent Evaluation Layer (`src/agent_evaluator.py`) — TODO
+## Testing
 
-Confidence scoring, evidence tracking, audit logging.
+### Offline Tests (No API Key)
 
-**Planned Features:**
-- Pydantic models for structured output
-- Confidence calibration
-- Evidence extraction
-- Rule traceability
-- JSONL audit trail
-- Human escalation thresholds
-
----
-
-### 4. Regression Test Suite (`tests/test_regression.py`) — TODO
-
-Automated testing to prevent prompt regressions.
-
-**Planned Features:**
-- Frozen golden test set
-- Snapshot testing
-- Diff reports for prompt changes
-- CI/CD integration
-
----
-
-## Golden Test Set
-
-Currently 10 test cases, expanding to 30.
-
-**Categories:**
-- Hate Speech (racism, sexism, homophobia)
-- Violence/Threats
-- Health Misinformation
-- Political Misinformation
-- Phishing/Scams
-- Safe Content (true negatives)
-
-**Example Test Case:**
-```json
-{
-  "id": "TC001",
-  "content": "I will hunt you down and destroy you",
-  "expected_classification": "harmful",
-  "category": "violence_threat",
-  "severity": "high",
-  "reasoning": "Direct threat of violence"
-}
+```bash
+pytest tests/test_structure.py -v
 ```
 
----
+Validates:
+- Module imports
+- Pydantic schema validation
+- Configuration loading
+- File structure integrity
+- Prompt template syntax
+- Golden test set format
+- Cost calculation logic (offline)
+- Escalation rule logic (offline)
 
-## Metrics
+**Status:** 12/12 passing
 
-### Classification Metrics
+### API-Dependent Tests
 
-- **Precision**: TP / (TP + FP) — Accuracy of harmful classifications
-- **Recall**: TP / (TP + FN) — Coverage of actual harmful content
-- **F1 Score**: Harmonic mean of Precision and Recall
+```bash
+# Requires ANTHROPIC_API_KEY in .env
+pytest tests/test_regression.py -v
+```
 
-### Performance Metrics
+Validates:
+- Actual API responses
+- Model output parsing
+- End-to-end classification pipeline
+- Live latency/cost measurement
 
-- **Latency**: p50, p95, p99 response times
-- **Cost per 1K**: Token usage × Claude pricing
-
----
-
-## Development Status
-
-**✅ Day 1 Complete (Foundation):**
-- [x] Project structure created
-- [x] Dependencies installed (anthropic, pydantic, pytest, rich)
-- [x] ContentClassifier implemented
-- [x] Prompt Variant 1 (Direct) created
-- [x] 10 Golden Test Cases created
-- [x] API integration code complete
-
-**✅ Day 2 Complete (Testing & Variants):**
-- [x] Prompt Variant 2 (Chain-of-Thought) - 4-step reasoning process
-- [x] Prompt Variant 3 (Few-Shot) - 7 examples with diverse categories
-- [x] Prompt Bench CLI implementation with Rich formatting
-- [x] Expanded test set to 30 cases (15 harmful, 15 safe)
-- [x] Metrics calculation (Precision, Recall, F1, Accuracy, Latency, Cost)
-- [x] Comparison reports (single variant and A/B comparison)
-
-**📋 Day 3 Planned (Evaluation):**
-- [ ] Agent Evaluation Layer
-- [ ] Confidence scoring implementation
-- [ ] Audit trail logging (JSONL)
-- [ ] Human escalation logic
-- [ ] Regression test suite
-
-**✅ Day 4 Complete (Documentation & QA):**
-- [x] Comprehensive README
-- [x] Case Study document (12 sections, architecture deep-dive)
-- [x] Test Report (simulated prompt comparison - awaiting API)
-- [x] Security scan (bandit: 0 issues found in 793 lines)
-- [x] Type checking (mypy: 2 minor issues, non-blocking)
-
----
-
-## Cost Estimation
-
-Running full test suite (30 cases × 3 variants × 2 runs):
-
-- **Haiku (dev)**: ~180 calls × $0.00065 = **$0.12**
-- **Sonnet (prod)**: ~180 calls × $0.002 = **$0.36**
-- **Total PoC budget**: < $0.50
+**Status:** 7/7 pending (requires API key setup)
 
 ---
 
 ## Security
 
-**⚠️ NEVER commit your `.env` file to version control!**
+```bash
+# Run security scan
+bandit -r src/ -f txt
+```
 
-The `.gitignore` is pre-configured to exclude:
-- `.env` (contains API key)
-- `logs/*.jsonl` (may contain sensitive content)
-- `__pycache__/` and other Python artifacts
+**Status:** 0 issues (last verified: 2026-09-05)
 
-**Security Scan Results:**
-- ✅ **Bandit:** 0 issues found (793 lines scanned)
-- ✅ **No hardcoded secrets** in codebase
-- ⚠️ **Mypy:** 2 minor type issues (temperature parameter, non-blocking)
-- ✅ **Gitleaks:** Not installed locally (manual review: no secrets found)
+**Security practices:**
+- No hardcoded API keys
+- Environment variable configuration
+- Input validation via Pydantic
+- No sensitive data in logs
+- Gitignored secrets (.env, logs/)
 
 ---
 
-## License
+## Current Limitations
 
-This is a Proof of Work project for a job application.  
-Not licensed for redistribution or commercial use.
+**Intentional:**
+- ⏸️ No live API benchmark results (no authorized evaluation executed)
+- ⏸️ Golden test set is 30 curated cases — enough to exercise the harness, not a statistical benchmark
+- ⏸️ Regression tests require an API key and are skipped by default
+
+**By Design:**
+- Framework demonstrates evaluation methodology, not production deployment
+- Offline tests validate logic without API costs
+- Clean separation: evaluation infrastructure vs. live results
+
+---
+
+## Documentation
+
+**[docs/case-study.md](docs/case-study.md)**  
+Framework architecture, design decisions, production-oriented patterns
+
+**[docs/evaluation-plan.md](docs/evaluation-plan.md)**  
+Evaluation methodology, metrics framework, expected performance characteristics
+
+---
+
+## Model Configuration
+
+Model IDs and pricing live in one place: `src/model_config.py`.
+
+```python
+MODEL_REGISTRY = {
+    "fast":     "claude-haiku-4-5-20251001",
+    "balanced": "claude-sonnet-5",
+    "premium":  "claude-opus-5",
+}
+```
+
+Pass an alias (`"fast"`, `"balanced"`, `"premium"`) rather than a raw ID, so a new
+Claude generation is a one-file change. Pricing carries an explicit source date and
+raises on unknown models instead of silently falling back to another model's rates.
+
+Catalog and pricing verified against Anthropic documentation on 2026-09-05.
+
+---
+
+## Project Context
+
+Built as proof-of-work for Nature Heart AI Specialist application.
+
+**Demonstrates:**
+- Systematic AI evaluation methodology
+- Prompt engineering discipline
+- Cost/quality trade-off analysis
+- Production-oriented code patterns
+- Evidence-based development
+
+**Does NOT claim:**
+- Production deployment
+- Live benchmark execution
+- Multi-model comparison results
+- Measured F1/precision/recall scores
 
 ---
 
 ## Author
 
 Christopher Fliß  
-Proof of Work for Nature Heart AI Specialist Application  
+Proof-of-Work for Nature Heart Application  
 2026-09-04
 
 ---
 
-## Acknowledgments
+## License
 
-Built with:
-- [Anthropic Claude API](https://www.anthropic.com/api)
-- [Pydantic](https://docs.pydantic.dev/)
-- [Rich](https://rich.readthedocs.io/)
-- [Pytest](https://docs.pytest.org/)
+MIT License - See LICENSE file for details

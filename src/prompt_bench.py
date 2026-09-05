@@ -125,7 +125,7 @@ class PromptBench:
     def run_variant(
         self,
         variant_name: str,
-        model: str = "claude-haiku-4",
+        model: str = "fast",
         verbose: bool = True,
     ) -> PromptMetrics:
         """Run one prompt variant against all test cases"""
@@ -165,7 +165,7 @@ class PromptBench:
     def compare_variants(
         self,
         variant_names: List[str],
-        model: str = "claude-haiku-4",
+        model: str = "fast",
     ) -> Dict[str, PromptMetrics]:
         """Compare multiple prompt variants"""
         results = {}
@@ -270,8 +270,8 @@ def main():
 
     parser.add_argument(
         "--model",
-        default="claude-haiku-4",
-        help="Claude model to use (default: claude-haiku-4)"
+        default="fast",
+        help="Claude model to use (default: fast)"
     )
 
     parser.add_argument(

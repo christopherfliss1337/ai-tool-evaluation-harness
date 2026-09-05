@@ -20,7 +20,7 @@ class AgentEvaluator:
     def __init__(
         self,
         prompt_variant: str = "variant_2_cot",
-        model: str = "claude-haiku-4",
+        model: str = "fast",
         escalation_threshold: float = 0.75,
         audit_log_file: str = "logs/audit_trail.jsonl",
         enable_audit: bool = True,
@@ -198,7 +198,7 @@ def main():
     console.print("Initializing Agent Evaluator...")
     evaluator = AgentEvaluator(
         prompt_variant="variant_2_cot",
-        model="claude-haiku-4",
+        model="fast",
     )
 
     # Run evaluation (only first 3 cases for demo)

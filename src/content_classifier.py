@@ -15,6 +15,8 @@ import anthropic
 from dotenv import load_dotenv
 from pydantic import BaseModel, Field
 
+from .model_config import MODEL_REGISTRY, calculate_cost, get_pricing
+
 # Load environment variables
 load_dotenv()
 
@@ -47,17 +49,10 @@ class ContentClassifier:
     Includes confidence scoring, evidence tracking, and audit logging.
     """
 
-    # Claude API pricing (per million tokens) - January 2026
-    PRICING = {
-        "claude-haiku-4": {"input": 0.25, "output": 1.25},
-        "claude-sonnet-4": {"input": 3.00, "output": 15.00},
-        "claude-opus-4": {"input": 15.00, "output": 75.00},
-    }
-
     def __init__(
         self,
         prompt_variant: str = "variant_1_direct",
-        model: str = "claude-haiku-4",
+        model: str = "fast",  # Use model alias: "fast", "balanced", "premium"
         temperature: float = 0.0,
         max_tokens: int = 500,
         escalation_threshold: float = 0.75,
@@ -66,13 +61,19 @@ class ContentClassifier:
 
         Args:
             prompt_variant: Name of prompt file in prompts/ directory
-            model: Claude model to use
+            model: Model alias ("fast"/"balanced"/"premium") or full model ID
             temperature: Sampling temperature (0.0 = deterministic)
             max_tokens: Max output tokens
             escalation_threshold: Confidence below which to escalate to human
         """
         self.prompt_variant = prompt_variant
-        self.model = model
+
+        # Resolve model alias to actual model ID
+        if model in MODEL_REGISTRY:
+            self.model = MODEL_REGISTRY[model]
+        else:
+            self.model = model  # Assume it's already a full model ID
+
         self.temperature = temperature
         self.max_tokens = max_tokens
         self.escalation_threshold = escalation_threshold
@@ -103,13 +104,13 @@ class ContentClassifier:
         return prompt_file.read_text(encoding="utf-8")
 
     def _calculate_cost(self, input_tokens: int, output_tokens: int) -> float:
-        """Calculate API call cost in USD"""
-        pricing = self.PRICING.get(self.model, self.PRICING["claude-haiku-4"])
-
-        input_cost = (input_tokens / 1_000_000) * pricing["input"]
-        output_cost = (output_tokens / 1_000_000) * pricing["output"]
-
-        return input_cost + output_cost
+        """Calculate API call cost in USD using centralized pricing"""
+        try:
+            return calculate_cost(self.model, input_tokens, output_tokens)
+        except KeyError:
+            # Model not in registry - return 0 to avoid breaking, log warning
+            print(f"Warning: Model '{self.model}' not in pricing registry. Cost set to $0.00")
+            return 0.0
 
     def _parse_classification_response(self, response_text: str) -> dict:
         """Parse JSON response from Claude
@@ -204,12 +205,12 @@ class ContentClassifier:
 
 def main():
     """CLI test of ContentClassifier"""
-    print("AI Agent Quality Framework - Content Classifier Test\n")
+    print("AI Tool Evaluation Harness - Content Classifier Test\n")
 
     # Initialize classifier
     classifier = ContentClassifier(
         prompt_variant="variant_1_direct",
-        model="claude-haiku-4",
+        model="fast",  # resolves via src/model_config.py
     )
 
     # Test content

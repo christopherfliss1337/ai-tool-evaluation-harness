@@ -174,20 +174,25 @@ Trade-off: Highest token cost
 4. Recommend best variant by F1 score
 5. Document trade-offs (precision vs. recall, cost vs. quality)
 
-**Example Output:**
+**Comparison table shape** — the harness prints one column per variant:
+
 ```
 ┌────────────────────┬────────────────┬──────────────┬───────────────┐
 │ Metric             │ variant_1      │ variant_2    │ variant_3     │
 ├────────────────────┼────────────────┼──────────────┼───────────────┤
-│ Precision          │ 0.875          │ 0.938        │ 0.941         │
-│ Recall             │ 0.933          │ 0.900        │ 0.933         │
-│ F1 Score           │ 0.903          │ 0.919        │ 0.937         │
-│ Avg Latency (ms)   │ 312            │ 587          │ 623           │
-│ Cost per 1K        │ $0.087         │ $0.142       │ $0.201        │
+│ Precision          │ —              │ —            │ —             │
+│ Recall             │ —              │ —            │ —             │
+│ F1 Score           │ —              │ —            │ —             │
+│ Avg Latency (ms)   │ —              │ —            │ —             │
+│ Cost per 1K        │ —              │ —            │ —             │
 └────────────────────┴────────────────┴──────────────┴───────────────┘
 
-Best Variant: variant_3_few_shot (F1: 0.937)
+Best Variant: decided by measured F1, once a run is authorised
 ```
+
+Cells are shown empty deliberately. No benchmark has been run against this
+repository, so there are no numbers to put in them. Filling them with plausible
+values would defeat the purpose of an evaluation harness.
 
 ---
 

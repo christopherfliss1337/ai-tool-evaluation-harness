@@ -1,11 +1,11 @@
 # Building a Quality-First AI Agent Framework
-**A Case Study in Production-Grade Agent Development**
+**A Case Study in Production-Oriented Agent Development**
 
 ---
 
 ## Executive Summary
 
-This case study documents the design and implementation of a production-grade testing and evaluation framework for AI agents, demonstrated through a content moderation use case. The framework prioritizes **systematic prompt engineering**, **confidence calibration**, **audit traceability**, and **regression prevention** over raw classification accuracy.
+This case study documents the design and implementation of a testing and evaluation framework demonstrating production-oriented patterns for AI agents, using content moderation as a proof-of-concept. The framework prioritizes **systematic prompt engineering**, **confidence calibration**, **audit traceability**, and **regression prevention** over raw classification accuracy.
 
 **Key Outcomes:**
 - 3 distinct prompt engineering strategies (Direct, Chain-of-Thought, Few-Shot)
@@ -13,7 +13,7 @@ This case study documents the design and implementation of a production-grade te
 - Complete audit trail for every classification decision (JSONL format)
 - Regression test suite preventing prompt degradation
 - 30-case golden test set covering 8 content categories
-- Production-ready code with 12/12 structure tests passing
+- PoC code demonstrating production patterns with 12/12 structure tests passing
 
 **Transferability:** Framework is domain-agnostic—the same architecture applies to health claims detection, compliance review, or any classification task requiring auditability and confidence scoring.
 
@@ -370,7 +370,7 @@ pytest tests/test_regression.py --snapshot-update
 
 ---
 
-## 8. Production Readiness
+## 8. Quality & Verification
 
 ### Technical Quality Gates
 
@@ -546,11 +546,11 @@ pytest
 
 ## 12. Conclusion
 
-This framework demonstrates that **production-grade AI agents require engineering discipline beyond prompt crafting.**
+This PoC demonstrates that **trustworthy AI agents require engineering discipline beyond prompt crafting.**
 
 **Key Takeaways:**
 1. **Systematic testing > intuition:** A/B test prompts, don't guess
-2. **Confidence matters:** Binary outputs aren't production-ready
+2. **Confidence matters:** Binary outputs aren't sufficient for trust
 3. **Audit everything:** You'll need to explain decisions later
 4. **Prevent regressions:** Test suite is non-negotiable
 5. **Measure cost/latency:** Production economics matter

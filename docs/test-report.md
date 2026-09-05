@@ -16,7 +16,7 @@ This report presents **expected performance** of three prompt engineering strate
 - **Best F1 Score:** Variant 3 (Few-Shot) - 0.937
 - **Fastest:** Variant 1 (Direct) - 312ms avg latency
 - **Most Cost-Effective:** Variant 1 (Direct) - $0.087 per 1K
-- **Recommended:** Variant 3 for production (best balance)
+- **Recommended:** Variant 3 for trust-critical use (best balance)
 
 ---
 
@@ -180,7 +180,7 @@ Structured 4-step reasoning process before classification.
 - ❌ More tokens = higher variance
 
 ### Use Cases
-- **Production deployments** where quality matters most
+- **Quality-focused deployments** where quality matters most
 - **Multi-category classification** benefiting from examples
 - **Edge case handling** (satire, educational content)
 - **Balanced precision/recall** requirements
@@ -223,7 +223,7 @@ At 1 million classifications per month:
 
 ## Recommendation
 
-### Production Deployment: **Variant 3 (Few-Shot)**
+### Recommended for Trust-Critical Use: **Variant 3 (Few-Shot)**
 
 **Rationale:**
 1. **Best F1 Score (0.937)** - Optimal precision/recall balance

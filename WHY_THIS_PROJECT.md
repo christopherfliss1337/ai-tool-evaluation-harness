@@ -46,9 +46,11 @@ Most teams evaluate AI by:
 2. Create 3 prompt variants (direct, chain-of-thought, few-shot)
 3. Run each model on each variant
 4. Compare: Accuracy × Latency × Cost
-5. Recommendation: "Use Sonnet with CoT prompt — best F1 (0.94) at acceptable cost ($0.04/1K)"
+5. Recommendation, stated in the shape the data supports: which variant wins on
+   F1, what that costs per 1K classifications, and where the human gate sits
 
-**Output:** Not opinions. Measured data.
+**Output:** measured numbers rather than opinions — once the run is authorised.
+No benchmark figures appear anywhere in this repository, because none were measured.
 
 ## Transferability:
 
